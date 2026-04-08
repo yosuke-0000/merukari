@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>シンプルタイマー</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', sans-serif;
+      color: #eee;
+    }
+
+    .timer-container {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: #888;
+      font-weight: 300;
+    }
+
+    .display {
+      font-size: 5rem;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    button {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      color: #fff;
+      min-width: 120px;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    #startBtn {
+      background: #0f3460;
+    }
+
+    #stopBtn {
+      background: #e94560;
+    }
+
+    #resetBtn {
+      background: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="timer-container">
+    <h1>シンプルタイマー</h1>
+    <div class="display" id="display">00:00:00</div>
+    <div class="controls">
+      <button id="startBtn">スタート</button>
+      <button id="stopBtn">ストップ</button>
+      <button id="resetBtn">リセット</button>
+    </div>
+  </div>
+
+  <script>
+    let seconds = 0;
+    let intervalId = null;
+
+    const display = document.getElementById('display');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function formatTime(totalSeconds) {
+      const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+      const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+      const s = String(totalSeconds % 60).padStart(2, '0');
+      return `${h}:${m}:${s}`;
+    }
+
+    function update() {
+      seconds++;
+      display.textContent = formatTime(seconds);
+    }
+
+    startBtn.addEventListener('click', () => {
+      if (!intervalId) {
+        intervalId = setInterval(update, 1000);
+      }
+    });
+
+    stopBtn.addEventListener('click', () => {
+      clearInterval(intervalId);
+      intervalId = null;
+    });
+
+    resetBtn.addEventListener('click', () => {
+      clearInterval(intervalId);
+      intervalId = null;
+      seconds = 0;
+      display.textContent = formatTime(seconds);
+    });
+  </script>
+</body>
+</html>
